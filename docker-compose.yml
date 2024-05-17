@@ -1,0 +1,26 @@
+services:
+  database:
+    image: postgres:alpine
+    container_name: database
+    env_file:
+      - ./db/.env
+
+  backend:
+    container_name: backend
+    build:
+      context: backend
+    ports:
+    - "5000:5000"
+    depends_on:
+      - database
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
